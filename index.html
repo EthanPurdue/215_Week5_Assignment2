@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1 class>Please Enjoy A Thanksgiving Meal!</h1>
+
+    <h3 class="fullMeal"></h3>
+
+    <p class="priceInfo"></p>
+
+    <p class="calorieInfo"></p>
+
+    <script>
+      const thanksgivingMeal = {
+        starter: {
+          fruit: "honeydew melon",
+          wine: "moscato",
+          calories: 180,
+        },
+
+        entree: {
+          meat: "Turkey",
+
+          alt: "Stuffed green peppers",
+
+          vegetables: {
+            potatoes: "Creamed mashed potatoes",
+            greens: "French beans",
+            salad: "Radacchio",
+          },
+
+          sides: {
+            bread: "garlic bread rolls",
+            pasta: "Macaroni and Cheese",
+          },
+
+          calories: 450,
+        },
+
+        dessert: {
+          ice_cream: "pumpkin-vanilla",
+          cake: "frosted pumpkin pie",
+          calories: 300,
+        },
+
+        total_cost: 25.0,
+        senior_discount: 0.1,
+
+        //DIVIDING LINE BETWEEN ATTRIBUTES AND FUNCTIONS-------------------------------------------------------------------
+
+        prettyPrint: function () {
+          // Collate the menu here
+          // display the content of the starter, the entree and the dessert
+          let menuStr = `For our starters we have ${thanksgivingMeal.starter.fruit} and ${thanksgivingMeal.starter.wine}. For our entrees we have ${thanksgivingMeal.entree.meat} for meat, and ${thanksgivingMeal.entree.alt} as an alternative. Our vegetables are ${thanksgivingMeal.entree.vegetables.potatoes}, ${thanksgivingMeal.entree.vegetables.greens}, and ${thanksgivingMeal.entree.vegetables.salad}. Our side options are ${thanksgivingMeal.entree.sides.bread} and ${thanksgivingMeal.entree.sides.pasta}. Finally for Desserts we have ${thanksgivingMeal.dessert.ice_cream} and ${thanksgivingMeal.dessert.cake}.`;
+          return menuStr;
+        },
+
+        // when calling upon this function that uses isSenior parameter, call it with (true) or (false)
+        // I'm assuming it wants me to use total_cost as the price
+        totalPrice(isSenior) {
+          // display the total price, given indicator isSenior - true or false
+          if (isSenior) {
+            // I need to use class variables so instead of *= 0.90 I made an equation found with using variables availble
+            // this way the discouunt is also flexible in case it is changed
+            displayStr =
+              thanksgivingMeal.total_cost -
+              thanksgivingMeal.total_cost * thanksgivingMeal.senior_discount;
+              console.log("discount was applied");
+          } else {
+            displayStr = thanksgivingMeal.total_cost;
+            console.log("Discount was NOT applied")
+          }
+
+          return displayStr;
+        },
+
+        // there is only one instance of the thanksgivingMeal class, but this is still very useful for how to use 'this'
+        // note that it isn't thanksgivingMeal.starter it is this.starter, just a note you may forget as to how this works
+        totalCalories: function () {
+          // Add the total calories
+          return (
+            this.starter.calories + this.entree.calories + this.dessert.calories
+          );
+        },
+
+        caloriesFrom: function (indicator) {
+          // get the total calories for the indicator
+          // 1 - starter, 2 - entree, 3 - dessert
+          let selectedCalories = " ";
+          if (indicator == 1) {
+            selectedCalories = thanksgivingMeal.starter.calories;
+          } else if (indicator == 2) {
+            selectedCalories = thanksgivingMeal.entree.calories;
+          } else if (indicator == 3) {
+            selectedCalories = thanksgivingMeal.dessert.calories;
+          } else {
+            alert("Invalid parameter, please type 1, 2, or 3");
+            selectedCalories = "Invalid parameter, please type 1, 2, or 3";
+          }
+          console.log("your paremeter was " + indicator + " and corresponding calories are " + selectedCalories)
+          return selectedCalories;
+        },
+      };
+
+      //END OF the class and all of its attributes and functions, now we call upon functions and put into the body
+      // create the displayStr (outside of class scope so it works) to display
+      //  because displayStr will be displayed before moving on we can reuse
+      let displayStr = " ";
+      
+      // log the function before printing it out on webpage, this one was most straightforward
+      console.log("prettyPrint function: " + thanksgivingMeal.prettyPrint());
+      displayStr = thanksgivingMeal.prettyPrint();
+      refToFullMeal = document.querySelector(".fullMeal");
+      refToFullMeal.innerHTML = displayStr;
+
+      // log the function result before showing what result is when senior citizen discount is active and inactive
+      console.log("totalPrice function: " + thanksgivingMeal.totalPrice());
+      displayStr = `The total price for our menu is $${thanksgivingMeal.totalPrice(false)}, but we currently have a 10% discount for senior citizens, which would bring the total to $${thanksgivingMeal.totalPrice(true)}`;
+      refToPriceInfo = document.querySelector('.priceInfo');
+      refToPriceInfo.innerHTML = displayStr;
+
+      // log the function for total calories and for each individual menu category
+      // use these functions to put in calorie amount where necessary, that way any changes made to meny reflect here
+      console.log("totalCalories function: " + thanksgivingMeal.totalCalories());
+      console.log("calories for starters: " + thanksgivingMeal.caloriesFrom(1));
+      console.log("calories for entrees: " + thanksgivingMeal.caloriesFrom(2));
+      console.log("calories for desserts: " + thanksgivingMeal.caloriesFrom(3));
+      displayStr = `If you're worried about calories here is some information that may help. The total calorie amount for all meal items is ${thanksgivingMeal.totalCalories()}. But the amount of calories for the starters are ${thanksgivingMeal.caloriesFrom(1)}, total for entrees is ${thanksgivingMeal.caloriesFrom(2)}, and total for desserts is ${thanksgivingMeal.caloriesFrom(3)}.`;
+      refToCalorieInfo = document.querySelector('.calorieInfo');
+      refToCalorieInfo.innerHTML = displayStr;
+
+
+    </script>
+  </body>
+</html>
